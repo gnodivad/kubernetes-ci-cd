@@ -18,7 +18,9 @@ node {
     
     stage "Push"
 
-        sh "docker push ${imageName}"
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
+            sh "docker push ${imageName}"
+        }
 
     stage "Deploy"
 
