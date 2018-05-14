@@ -9,17 +9,17 @@ node {
     tag = readFile('commit-id').replace("\n", "").replace("\r", "")
     appName = "hello-kenzan"
     registryHost = "davidodw/"
-    imageName = "${registryHost}${appName}:latest"
+    imageName = "${registryHost}${appName}:${tag}"
     env.BUILDIMG=imageName
 
     stage "Build"
     
-        sh "docker build -t ${imageName} -f applications/hello-kenzan/Dockerfile applications/hello-kenzan"
+        docker build -t ${imageName} -f applications/hello-kenzan/Dockerfile applications/hello-kenzan
     
     stage "Push"
 
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-            sh "docker push ${imageName}"
+            docker push ${imageName}
         }
 
     stage "Deploy"
